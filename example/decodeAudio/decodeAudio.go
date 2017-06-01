@@ -9,7 +9,7 @@ import (
 	"math"
 	"os"
 
-	"github.com/targodan/native"
+  	_ "github.com/targodan/native"
 
 	"gopkg.in/targodan/ffgopeg.v1/avcodec"
 	"gopkg.in/targodan/ffgopeg.v1/avformat"
@@ -114,13 +114,13 @@ func getSample(codecCtxt *avcodec.CodecContext, buffer []byte, sampleIndex int) 
 		val = int64(buffer[byteIndex]) - 127
 
 	case 2:
-		val = int64(int16(native.ByteOrder.Uint16(buffer[byteIndex : byteIndex+sampleSize])))
+		val = int64(int16(binary.LittleEndian.Uint16(buffer[byteIndex : byteIndex+sampleSize])))
 
 	case 4:
-		val = int64(int32(native.ByteOrder.Uint32(buffer[byteIndex : byteIndex+sampleSize])))
+		val = int64(int32(binary.LittleEndian.Uint32(buffer[byteIndex : byteIndex+sampleSize])))
 
 	case 8:
-		val = int64(native.ByteOrder.Uint64(buffer[byteIndex : byteIndex+sampleSize]))
+		val = int64(binary.LittleEndian.Uint64(buffer[byteIndex : byteIndex+sampleSize]))
 
 	default:
 		panic(fmt.Sprintf("Invalid sample size %d.", sampleSize))
